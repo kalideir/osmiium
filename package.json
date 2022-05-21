@@ -11,13 +11,16 @@
     "prepare": "husky install"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
     "@tailwindcss/typography": "^0.5.2",
     "nanoid": "^3.3.4",
     "next": "12.1.6",
+    "next-redux-wrapper": "^7.0.5",
     "next-themes": "^0.2.0",
     "react": "18.1.0",
     "react-dom": "18.1.0",
     "react-icons": "^4.3.1",
+    "react-redux": "^8.0.1",
     "selecto": "^1.16.2"
   },
   "devDependencies": {
