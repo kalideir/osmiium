@@ -1,3 +1,39 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.container {
+  max-width: 800px;
+}
+
+.elements {
+}
+
+.cube {
+  display: inline-block;
+}
+
+h1,
+.description {
+  text-align: center;
+}
+
+.button:hover {
+  background: #333;
+  color: white;
+}
+
+.elements {
+}
+
+.selecto-area {
+}
+
+#selecto1 .cube {
+  transition: all ease 0.2s;
+}
+
+.selecto-area .selected {
+  color: #fff;
+  background: lightgreen;
+}
