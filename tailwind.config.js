@@ -5,7 +5,12 @@ const colors = require('tailwindcss/colors')
 
 /** @type {import("tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
-  content: ['./pages/**/*.tsx', './components/**/*.tsx', './layouts/**/*.tsx', './lib/**/*.ts'],
+  content: [
+    './**/pages/**/*.tsx',
+    './**/components/**/*.tsx',
+    './**/layouts/**/*.tsx',
+    './**/lib/**/*.ts',
+  ],
   darkMode: 'class',
   theme: {
     extend: {
@@ -23,8 +28,7 @@ module.exports = {
       },
       colors: {
         primary: colors.indigo,
-        //@ts-ignore
-        gray: colors.neutral, // TODO: Remove ts-ignore after tw types gets updated to v3
+        gray: colors.neutral,
       },
       typography: (theme) => ({
         DEFAULT: {

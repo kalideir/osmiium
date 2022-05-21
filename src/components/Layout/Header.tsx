@@ -7,7 +7,7 @@ function Header() {
     <header className="flex items-center justify-between py-10">
       <div>
         <Link href="/" aria-label="osmiium">
-          <div className="flex items-center justify-between dark:text-slate-50 text-slate-800">
+          <div className="flex items-center justify-between dark:text-zinc-50 text-zinc-800">
             <div className="hidden h-6 text-2xl font-semibold sm:block">Osmiium</div>
           </div>
         </Link>
@@ -18,7 +18,7 @@ function Header() {
             <Link
               key={link.title}
               href={link.href}
-              className="p-1 font-medium text-slate-900 dark:text-slate-100 sm:p-4"
+              className="p-1 font-medium text-zinc-900 dark:text-zinc-100 sm:p-4"
             >
               {link.title}
             </Link>
