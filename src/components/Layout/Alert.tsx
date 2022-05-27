@@ -11,7 +11,7 @@ interface Props {
   LeftIcon?: () => JSX.Element
 }
 enum COLORS {
-  success = 'indigo',
+  success = 'green',
   danger = 'red',
   info = 'blue',
   default = 'zinc',
@@ -34,7 +34,10 @@ function Alert({ show = true, type, message, autoHide, closable, LeftIcon }: Pro
     <>
       <div
         id="alert-1"
-        className={clsx('flex p-4 mb-4 rounded-md mx-5', `bg-${COLORS[type]}-400`)}
+        className={clsx(
+          'flex p-4 mb-4 rounded-md mx-10',
+          `bg-${COLORS[type]}-400 dark:bg-${COLORS[type]}-400`
+        )}
         role="alert"
       >
         {!!LeftIcon && <LeftIcon />}
