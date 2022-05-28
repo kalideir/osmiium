@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@faker-js/faker": "^7.1.0",
+    "@hookform/resolvers": "^2.8.10",
     "@reduxjs/toolkit": "^1.8.1",
     "@tailwindcss/typography": "^0.5.2",
     "clsx": "^1.1.1",
@@ -24,7 +25,9 @@
     "react-dom": "18.1.0",
     "react-icons": "^4.3.1",
     "react-redux": "^8.0.1",
-    "selecto": "^1.16.2"
+    "resize-observer-polyfill": "^1.5.1",
+    "selecto": "^1.16.2",
+    "yup": "^0.32.11"
   },
   "devDependencies": {
     "@types/node": "17.0.35",

@@ -9,7 +9,7 @@ function StepsRangeInput() {
         <BsDash size={40} className="text-gray-900 dark:text-gray-200" />
       </div>
       <div className="flex items-center justify-center flex-2 h-full w-full text-2xl font-bold">
-        2{' '}
+        # of tests 2{' '}
       </div>
       <div className="flex items-center justify-center w-12 h-full border">
         <BsPlus size={40} className="text-gray-900 dark:text-gray-200" />
