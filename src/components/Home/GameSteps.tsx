@@ -1,72 +1,64 @@
-import * as React from 'react'
-import Selecto from 'react-selecto'
-import { DragScrollOptions } from '../../types'
+import { AnimatePresence, motion } from 'framer-motion'
+import { useEffect } from 'react'
+import {
+  selectNewGameState,
+  selectTypesVisible,
+  toggleTypesVisibility,
+} from '../../store/features/new'
+import { useAppDispatch, useAppSelector } from '../../store/hooks'
+import { types } from '../../utils'
+import GameType from './GameType'
 
 export default function GameSteps() {
-  const [scrollOptions, setScrollOptions] = React.useState<DragScrollOptions>()
-  const scrollerRef = React.useRef<HTMLDivElement>(null)
-  const cubes = []
+  const typesVisibleState = useAppSelector(selectTypesVisible)
+  const newGameState = useAppSelector(selectNewGameState)
+  useEffect(() => {
+    console.log(window.innerWidth)
+  })
 
-  for (let i = 0; i < 10 * 10; ++i) {
-    cubes.push(i)
-  }
+  const dispatch = useAppDispatch()
 
-  React.useEffect(() => {
-    setScrollOptions({
-      container: scrollerRef.current as HTMLElement,
-      throttleTime: 30,
-      threshold: 0,
-    })
-  }, [])
+  const showTypes = () => dispatch(toggleTypesVisibility(true))
+
+  const hideTypes = () => dispatch(toggleTypesVisibility(false))
 
   return (
-    <div className="container px-5">
-      <Selecto
-        dragContainer={'.elements'}
-        selectableTargets={['.selecto-area .cube']}
-        hitRate={100}
-        selectByClick={false}
-        selectFromInside={false}
-        toggleContinueSelect={['shift']}
-        ratio={0}
-        scrollOptions={scrollOptions}
-        onDragStart={(e) => {
-          if (e.inputEvent.target.nodeName === 'BUTTON') {
-            return false
-          }
-          return true
-        }}
-        onSelect={(e) => {
-          e.added.forEach((el) => {
-            el.classList.add('selected')
-          })
-          e.removed.forEach((el) => {
-            el.classList.remove('selected')
-          })
-        }}
-        onScroll={(e) => {
-          scrollerRef.current?.scrollBy(e.direction[0] * 10, e.direction[1] * 10)
-        }}
-      ></Selecto>
-
-      <div
-        className="grid gap-4 elements scroll p-10 selecto-area cursor-crosshair self-center dark:bg-zinc-900 bg-zinc-100 border rounded-md border-zinc-100 dark:border-zinc-800"
-        id="selecto1"
-        ref={scrollerRef}
-        style={{
-          gridTemplateColumns: 'repeat(10, 1fr)',
-          gridTemplateRows: 'repeat(10, 1fr)',
-          // padding: '2rem',
-        }}
-      >
-        {cubes.map((i) => (
-          <div
-            className="cube w-6 cursor-none h-6 mx-auto bg-indigo-500 rounded-full"
-            key={i}
-          ></div>
-        ))}
-      </div>
-      <div className="empty elements"></div>
-    </div>
+    <AnimatePresence initial={false}>
+      {typesVisibleState && (
+        <motion.section
+          key="content"
+          initial="collapsed"
+          animate="open"
+          exit="collapsed"
+          variants={{
+            open: { opacity: 1, height: 'auto' },
+            collapsed: { opacity: 0, height: 0 },
+          }}
+          transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
+        >
+          <>
+            <div className="mx-5 grid grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-2 px-5 sm:px-1 xs:px-1">
+              {types.map((type) => (
+                <GameType key={type} type={type} />
+              ))}
+            </div>
+            {!!newGameState.selectedTypes.length && (
+              <motion.button
+                initial={true}
+                whileHover={{
+                  scale: 1.1,
+                  boxShadow: '0px 0px 4px dodgerblue',
+                }}
+                onClick={() => (typesVisibleState ? hideTypes() : showTypes())}
+                type="button"
+                className="flex mx-auto py-2 px-16 mt-10 mb-2 text-sm font-bold focus:outline-none rounded-full border border-blue-200 bg-gray-100 text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600"
+              >
+                CONTINUE
+              </motion.button>
+            )}
+          </>
+        </motion.section>
+      )}
+    </AnimatePresence>
   )
 }

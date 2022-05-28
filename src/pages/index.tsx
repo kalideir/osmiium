@@ -9,9 +9,9 @@ export default function App() {
 
   return (
     <div className="p-3">
-      <div className="py-7 bg-zinc-50 dark:bg-zinc-900 max-w-2xl mx-auto rounded-lg">
-        <h3 className="text-3xl text-center font-bold dark:text-zinc-100 text-zinc-800 hover:text-indigo-500 hover:dark:text-indigo-600">
-          Let&apos;s create your game
+      <div className="py-7 bg-zinc-100 dark:bg-zinc-900 max-w-2xl mx-auto rounded-lg">
+        <h3 className="text-3xl text-center font-bold dark:text-zinc-100 text-indigo-500 ">
+          New Game
         </h3>
       </div>
       <NewGameForm />
