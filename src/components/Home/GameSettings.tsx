@@ -1,21 +1,25 @@
-import { AnimatePresence, motion, useTransform } from 'framer-motion'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { useEffect } from 'react'
-import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/router'
+import { AnimatePresence, motion } from 'framer-motion'
+import { FieldValues, useForm } from 'react-hook-form'
 import { BsCollectionPlay, BsSpeedometer2, BsUiChecksGrid } from 'react-icons/bs'
+import * as yup from 'yup'
 import { selectTypesVisible, toggleTypesVisibility } from '../../store/features/new'
 import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { InputRange } from './RangeSlider'
+
+import React from 'react'
+import { nanoid } from 'nanoid'
+import RangeSlider from './RangeSlider'
 
 const schema = yup.object({
-  // email: yup.string().email().required('Email is required'),
-  // password: yup.string().min(8).max(32).required('Password is required'),
+  tests: yup.number().min(1, 'Required').max(30).required('Number of tests is required'),
+  items: yup.number().min(1, 'Required').max(5).required('Number of items is required'),
+  speed: yup.number().min(1, 'Required').max(10).required('Speed is required'),
 })
 
 export default function GameSteps() {
   const typesVisibleState = useAppSelector(selectTypesVisible)
-
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -23,13 +27,20 @@ export default function GameSteps() {
     reset,
   } = useForm({
     resolver: yupResolver(schema),
+    defaultValues: {
+      tests: 5,
+      items: 3,
+      speed: 5,
+    },
   })
 
   const dispatch = useAppDispatch()
 
-  const showTypes = () => dispatch(toggleTypesVisibility(true))
+  const onSubmitHandler = (data: FieldValues) => {
+    console.log({ data })
 
-  const hideTypes = () => dispatch(toggleTypesVisibility(false))
+    router.push(`/games/${nanoid()}`)
+  }
 
   return (
     <AnimatePresence>
@@ -45,14 +56,19 @@ export default function GameSteps() {
           }}
           transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
         >
-          <>
-            <div className="2xl:w-3/5 lg:w-3/5 md:w-4/5 sm:w-4/5 xs:w-5/5 xs:px-3 mx-auto">
+          <form className="mt-8 space-y-6" onSubmit={handleSubmit(onSubmitHandler)}>
+            <div className="w-3/5 lg:w-3/5 md:w-4/5 sm:w-4/5 xs:w-5/5 xs:px-3 mx-auto">
               <div className="mb-10 mt-10 text-sm">
                 <p className="mb-2 uppercase flex items-center justify-start text-xs">
                   <BsCollectionPlay size={22} className="mr-2" />
                   Number of tests
                 </p>
-                <InputRange color="bg-sky-600" initValue={5} min={1} max={30} step={1} />
+                <RangeSlider color="bg-sky-600" initValue={5} min={1} max={30} step={1} />
+                {errors.tests && (
+                  <div className="text-red-500 font-semibold mt-2 text-xs">
+                    {errors.tests.message}
+                  </div>
+                )}
               </div>
 
               <div className="mb-10">
@@ -60,28 +76,40 @@ export default function GameSteps() {
                   <BsUiChecksGrid size={22} className="mr-2" />
                   Number of items per test
                 </p>
-                <InputRange color="bg-emerald-600" initValue={3} min={1} max={5} step={1} />
+                <RangeSlider color="bg-emerald-600" initValue={3} min={1} max={5} step={1} />
+                {errors.items && (
+                  <div className="text-red-500 font-semibold mt-2 text-xs">
+                    {errors.items.message}
+                  </div>
+                )}
               </div>
               <div className="mb-10">
                 <p className="mb-2 uppercase flex items-center justify-start text-xs">
                   <BsSpeedometer2 className="mr-2" size={22} />
                   Speed
                 </p>
-                <InputRange color="bg-blue-600" initValue={5} min={1} max={30} step={1} />
+                <RangeSlider color="bg-blue-600" initValue={5} min={1} max={10} step={1} />
+                {errors.speed && (
+                  <div className="text-red-500 font-semibold mt-2 text-xs">
+                    {errors.speed.message}
+                  </div>
+                )}
               </div>
             </div>
             <motion.button
+              type="submit"
+              whileTap={{
+                scale: 1.5,
+              }}
               whileHover={{
                 scale: 1.1,
                 boxShadow: '0px 0px 4px green',
               }}
-              onClick={() => (typesVisibleState ? hideTypes() : showTypes())}
-              type="button"
               className="flex mx-auto py-2 px-16 mt-10 mb-2 text-sm font-bold focus:outline-none rounded-full border bg-gradient-to-r from-green-500 to-teal-500 text-white "
             >
               START
             </motion.button>
-          </>
+          </form>
         </motion.section>
       )}
     </AnimatePresence>

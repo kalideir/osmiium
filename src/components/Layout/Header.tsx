@@ -7,8 +7,14 @@ function Header() {
     <header className="flex items-center justify-between py-10">
       <div>
         <Link href="/" aria-label="osmiium">
-          <div className="flex items-center justify-between dark:text-zinc-50 text-zinc-800">
-            <div className="hidden h-6 text-2xl font-semibold sm:block">Osmiium</div>
+          <div className="flex items-center justify-between uppercase">
+            <div className="h-6 text-2xl font-semibold sm:block flex items-center justify-start">
+              <img
+                src="https://cdn-icons-png.flaticon.com/512/5937/5937083.png"
+                alt=""
+                className="h-16 w-16"
+              />
+            </div>
           </div>
         </Link>
       </div>

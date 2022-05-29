@@ -30,7 +30,7 @@ function GameType(props: Props) {
       whileHover={{
         scale: 1.1,
         speed: 0.2,
-        boxShadow: '0px 0px 10px #3f3cbb',
+        boxShadow: '0px 0px 10px #333',
       }}
       whileTap={{
         scale: 1.4,

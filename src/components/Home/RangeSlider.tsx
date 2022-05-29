@@ -25,7 +25,7 @@ const calculateWidthFromValue = (
   return result > truckWidth ? truckWidth : result
 }
 
-export const InputRange = (props: {
+const RangeSlider = (props: {
   initValue?: number
   min: number
   max: number
@@ -86,3 +86,5 @@ export const InputRange = (props: {
     </motion.div>
   )
 }
+
+export default RangeSlider
