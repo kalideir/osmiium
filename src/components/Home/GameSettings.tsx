@@ -63,7 +63,7 @@ export default function GameSteps() {
                   <BsCollectionPlay size={22} className="mr-2" />
                   Number of tests
                 </p>
-                <RangeSlider color="bg-sky-600" initValue={5} min={1} max={30} step={1} />
+                <RangeSlider color="bg-sky-400" initValue={5} min={1} max={30} step={1} />
                 {errors.tests && (
                   <div className="text-red-500 font-semibold mt-2 text-xs">
                     {errors.tests.message}
@@ -76,7 +76,7 @@ export default function GameSteps() {
                   <BsUiChecksGrid size={22} className="mr-2" />
                   Number of items per test
                 </p>
-                <RangeSlider color="bg-emerald-600" initValue={3} min={1} max={5} step={1} />
+                <RangeSlider color="bg-emerald-400" initValue={3} min={1} max={5} step={1} />
                 {errors.items && (
                   <div className="text-red-500 font-semibold mt-2 text-xs">
                     {errors.items.message}
@@ -88,7 +88,7 @@ export default function GameSteps() {
                   <BsSpeedometer2 className="mr-2" size={22} />
                   Speed
                 </p>
-                <RangeSlider color="bg-blue-600" initValue={5} min={1} max={10} step={1} />
+                <RangeSlider color="bg-blue-400" initValue={5} min={1} max={10} step={1} />
                 {errors.speed && (
                   <div className="text-red-500 font-semibold mt-2 text-xs">
                     {errors.speed.message}

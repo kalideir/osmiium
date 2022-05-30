@@ -30,7 +30,7 @@ const RangeSlider = (props: {
   min: number
   max: number
   step: number
-  color: `bg-${string}-600`
+  color: `bg-${string}-400`
   onChange?: (...args: unknown[]) => unknown
 }) => {
   const { initValue = 1, min, max, step, color, onChange } = props

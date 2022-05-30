@@ -25,7 +25,7 @@ function MultiStepProgressBar(props: Props) {
                 style={{ width: `${progress * 100}%` }}
               >
                 {' '}
-                {Math.ceil(progress * 100)}%
+                <span style={{ fontSize: 0 }}>{Math.ceil(progress * 100)}</span>
               </div>
             </div>
           </div>
