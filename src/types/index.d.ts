@@ -1,3 +1,4 @@
+import { number } from 'yup/lib/locale'
 import { types } from '../utils'
 
 export interface INewGameContext {
@@ -6,3 +7,5 @@ export interface INewGameContext {
   numberOfItemsPerScreen: number
 }
 export type TypeKey = typeof types[number]
+
+export type Period = 1 | 2 | 3 | 4 | 5
