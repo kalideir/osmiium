@@ -1,7 +1,8 @@
-import clsx from 'clsx'
-import { motion, useMotionValue, useTransform } from 'framer-motion'
-import React, { useEffect, useRef, useState } from 'react'
-import { useResizedWidth } from '../../hooks'
+import clsx from 'clsx';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import React, { useEffect, useRef, useState } from 'react';
+import { useResizedWidth } from '../../hooks';
+import { SettingName } from '../../types';
 
 const calculateValueFromWidth = (
   value: number,
@@ -10,8 +11,8 @@ const calculateValueFromWidth = (
   maxValue: number,
   truckWidth: number
 ) => {
-  return Math.floor((minValue + (value / truckWidth) * maxValue) / step) * step
-}
+  return Math.floor((minValue + (value / truckWidth) * maxValue) / step) * step;
+};
 
 const calculateWidthFromValue = (
   value: number,
@@ -20,41 +21,42 @@ const calculateWidthFromValue = (
   maxValue: number,
   truckWidth: number
 ) => {
-  const val = value < minValue ? minValue : value
-  const result = ((Math.floor(val / step) * step) / maxValue) * truckWidth
-  return result > truckWidth ? truckWidth : result
-}
+  const val = value < minValue ? minValue : value;
+  const result = ((Math.floor(val / step) * step) / maxValue) * truckWidth;
+  return result > truckWidth ? truckWidth : result;
+};
 
 const RangeSlider = (props: {
-  initValue?: number
-  min: number
-  max: number
-  step: number
-  color: `bg-${string}-400`
-  onChange?: (...args: unknown[]) => unknown
+  initValue?: number;
+  min: number;
+  max: number;
+  step: number;
+  color: `bg-${string}-400`;
+  name: SettingName;
+  onChange?: (type: SettingName, value: number) => unknown;
 }) => {
-  const { initValue = 1, min, max, step, color, onChange } = props
-  const [value, setVatue] = useState<number>(initValue)
-  const [truckRef, truckWidth] = useResizedWidth()
-  const [thumbRef, thumbWidth] = useResizedWidth()
+  const { initValue = 1, min, max, step, color, name, onChange } = props;
+  const [value, setVatue] = useState<number>(initValue);
+  const [truckRef, truckWidth] = useResizedWidth();
+  const [thumbRef, thumbWidth] = useResizedWidth();
 
-  const containerRef = useRef(null)
+  const containerRef = useRef(null);
 
-  const x = useMotionValue(0)
+  const x = useMotionValue(0);
   const widthX = useTransform(x, (value) => {
-    return value + (thumbWidth as number)
-  })
+    return value + (thumbWidth as number);
+  });
 
   useEffect(() => {
-    const width = calculateWidthFromValue(value, step, min, max, truckWidth as number)
-    x.set(width)
-  }, [value, step, min, max, truckWidth, x, thumbWidth])
+    const width = calculateWidthFromValue(value, step, min, max, truckWidth as number);
+    x.set(width);
+  }, [value, step, min, max, truckWidth, x, thumbWidth]);
 
   const handleDrag = () => {
-    const val = calculateValueFromWidth(x.get(), step, min, max, truckWidth as number)
-    setVatue(val)
-    onChange && onChange(val)
-  }
+    const val = calculateValueFromWidth(x.get(), step, min, max, truckWidth as number);
+    setVatue(val);
+    onChange && onChange(name, val);
+  };
 
   return (
     <motion.div ref={containerRef} className="relative w-full h-5 px-2 bg-gray-300 rounded-full">
@@ -84,7 +86,7 @@ const RangeSlider = (props: {
         style={{ width: widthX }}
       />
     </motion.div>
-  )
-}
+  );
+};
 
-export default RangeSlider
+export default RangeSlider;

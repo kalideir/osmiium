@@ -1,11 +1,14 @@
-import { BaseStep, NumericStep } from './Steps'
+import { StepType } from '../../types';
+import { BaseStep, NumberStep } from './Steps';
 
 export default class StepFactory {
   makeStep(
-    stepKey: 'NUMERIC' | string,
+    stepKey: StepType,
     name: string,
-    numberOfElements: number
+    numberOfElements: number,
+    showsTimer: boolean,
+    tokenSize: number
   ): BaseStep | undefined {
-    if (stepKey === 'NUMERIC') return new NumericStep(name, numberOfElements)
+    if (stepKey === 'NUMBER') return new NumberStep(name, numberOfElements, showsTimer, tokenSize);
   }
 }

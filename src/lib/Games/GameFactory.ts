@@ -1,14 +1,16 @@
-import StepFactory from './StepFactory'
-import { BaseStep } from './Steps'
+import { SingleTypedGame } from '.';
+import { GameType, StepType } from '../../types';
 
-export interface IGame {
-  steps: BaseStep[]
-  isLoadedFromCache: boolean
-}
-
-export default interface GameFactory extends IGame {
-  stepFactory: StepFactory
-  makeSteps(stepsKeys: string[]): void
-  reportResults(): unknown
-  reportScore(): unknown
+export default class GameFactory {
+  makeGame(
+    gameType: GameType,
+    stepsKeys: StepType[],
+    numberOfElements: number,
+    speed: number,
+    tokenSize: number
+  ): SingleTypedGame | undefined {
+    if (gameType === 'SINGLE_TYPE') {
+      return new SingleTypedGame(numberOfElements, speed, stepsKeys, tokenSize);
+    }
+  }
 }
