@@ -1,4 +1,3 @@
-import { number } from 'yup/lib/locale';
 import { types } from '../utils';
 
 export interface INewGameContext {
@@ -28,3 +27,8 @@ export type StepType =
 export type GameType = 'SINGLE_TYPE' | 'MIXED';
 
 export type SettingName = 'numberofTests' | 'tokenSize' | 'numberOfElements' | 'speed';
+
+export type StepElement<T extends number | string> = {
+  isAnswer: boolean;
+  value: T;
+};

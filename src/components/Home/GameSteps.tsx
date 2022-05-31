@@ -1,26 +1,23 @@
-import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect } from 'react'
+import { AnimatePresence, motion } from 'framer-motion';
+import { useEffect } from 'react';
 import {
   selectNewGameState,
   selectTypesVisible,
   toggleTypesVisibility,
-} from '../../store/features/new'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { types } from '../../utils'
-import GameType from './GameType'
+} from '../../store/features/new';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { types } from '../../utils';
+import GameType from './GameType';
 
 export default function GameSteps() {
-  const typesVisibleState = useAppSelector(selectTypesVisible)
-  const newGameState = useAppSelector(selectNewGameState)
-  useEffect(() => {
-    console.log(window.innerWidth)
-  })
+  const typesVisibleState = useAppSelector(selectTypesVisible);
+  const newGameState = useAppSelector(selectNewGameState);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
-  const showTypes = () => dispatch(toggleTypesVisibility(true))
+  const showTypes = () => dispatch(toggleTypesVisibility(true));
 
-  const hideTypes = () => dispatch(toggleTypesVisibility(false))
+  const hideTypes = () => dispatch(toggleTypesVisibility(false));
 
   return (
     <AnimatePresence initial={false}>
@@ -37,7 +34,7 @@ export default function GameSteps() {
           transition={{ duration: 0.5, ease: [0.04, 0.62, 0.23, 0.98] }}
         >
           <>
-            <div className="mx-5 grid grid-cols-3 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-2 px-5 sm:px-1 xs:px-1">
+            <div className="mx-5 grid grid-cols-4 md:grid-cols-3 sm:grid-cols-2 xs:grid-cols-2 gap-2 px-5 sm:px-1 xs:px-1">
               {types.map((type) => (
                 <GameType key={type} type={type} />
               ))}
@@ -60,5 +57,5 @@ export default function GameSteps() {
         </motion.section>
       )}
     </AnimatePresence>
-  )
+  );
 }

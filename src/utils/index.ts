@@ -1,1 +1,2 @@
-export * from './newGame'
+export * from './newGame';
+export * from './arrays';

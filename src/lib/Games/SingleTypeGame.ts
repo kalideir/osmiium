@@ -1,23 +1,10 @@
 import { StepType } from '../../types';
-import { IGame } from './GameFactory';
-import StepFactory from './StepFactory';
-import BaseStep from './Steps/BaseStep';
+import BaseGame from './BaseGame';
 
-export default class SingleTypedGame implements IGame {
-  stepFactory: StepFactory;
-  steps: BaseStep[];
-  isLoadedFromCache: boolean;
-  numberOfElements: number;
-  speed: number;
-  stepsKeys: StepType[];
-
-  constructor(numberOfElements: number, speed: number, stepsKeys: StepType[]) {
-    this.stepFactory = new StepFactory();
-    this.numberOfElements = numberOfElements;
-    this.speed = speed;
-    this.stepsKeys = stepsKeys;
-    this.steps = [];
-    this.isLoadedFromCache = false;
+// A game where each step has the same random type
+export default class SingleTypedGame extends BaseGame {
+  constructor(numberOfElements: number, speed: number, stepsKeys: StepType[], tokenSize: number) {
+    super(numberOfElements, speed, stepsKeys, tokenSize);
   }
 
   reportResults(): unknown {
@@ -29,7 +16,13 @@ export default class SingleTypedGame implements IGame {
 
   makeSteps() {
     this.stepsKeys.forEach((key) => {
-      const step = this.stepFactory.makeStep(key, 'game 1', 3);
+      const step = this.stepFactory.makeStep(
+        key,
+        'Game ' + key,
+        this.numberOfElements,
+        true,
+        this.tokenSize
+      );
       if (step) {
         step.generateElements();
         this.steps.push(step);

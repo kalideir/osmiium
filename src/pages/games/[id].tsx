@@ -1,13 +1,17 @@
 import { useRouter } from 'next/router';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { MultiStepProgressBar } from '../../components';
+import BaseGame from '../../lib/Games/BaseGame';
 import GameFactory from '../../lib/Games/GameFactory';
+import { BaseStep } from '../../lib/Games/Steps';
 import { selectNewGameState } from '../../store/features/new';
 import { useAppSelector } from '../../store/hooks';
 
 function Game() {
   const newGameState = useAppSelector(selectNewGameState);
   const gameFactory = useRef<GameFactory>();
+  const [currentGame, setCurrentGame] = useState<BaseGame>();
+  const [currentStep, setCurrentStep] = useState<{ step: BaseStep; isEnded: boolean }>();
 
   const router = useRouter();
 
@@ -23,11 +27,26 @@ function Game() {
       'SINGLE_TYPE',
       ['NUMBER', 'NUMBER', 'NUMBER'],
       newGameState.numberOfElements,
-      newGameState.speed
+      newGameState.speed,
+      newGameState.tokenSize
     );
     game?.makeSteps();
-    console.log(game);
-  }, []);
+    setCurrentGame(game);
+  }, [newGameState.numberOfElements, newGameState.speed, newGameState.tokenSize]);
+
+  useEffect(() => {
+    if (currentGame) {
+      // const interval = setInterval(() => {
+      setCurrentStep({ step: currentGame.steps[0] as BaseStep, isEnded: false });
+      // }, (currentGame.steps.length as number) * 5 * 1000);
+
+      // clearInterval(interval);
+    }
+  }, [currentGame]);
+
+  console.log(currentGame);
+
+  console.log(JSON.stringify(currentStep, null, 4), 'x');
 
   if (!newGameState.isInitialized) return null;
 

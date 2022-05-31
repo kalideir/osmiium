@@ -9,9 +9,13 @@ export const types = [
   'name',
   'phone',
   'random',
+  'number',
+  'emoji',
+  'email',
   'word',
   'finance',
-] as const
+  'file',
+] as const;
 
 export const subTypes = {
   address: [],
@@ -24,10 +28,14 @@ export const subTypes = {
   name: [],
   phone: [],
   random: [],
+  number: [],
+  emoji: [],
+  email: [],
   word: [],
   finance: [],
-}
+  file: [],
+};
 
 export const gameSteps = () => {
-  return types
-}
+  return types;
+};

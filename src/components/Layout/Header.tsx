@@ -1,13 +1,13 @@
-import Link from 'next/link'
-import React from 'react'
-import { ThemeSwitch } from '.'
+import Link from 'next/link';
+import React from 'react';
+import { ThemeSwitch } from '.';
 
 function Header() {
   return (
     <header className="flex items-center justify-between py-10">
       <div>
         <Link href="/" aria-label="osmiium">
-          <div className="flex items-center justify-between uppercase">
+          <div className="flex items-center cursor-pointer justify-between uppercase">
             <div className="h-6 text-2xl font-semibold sm:block flex items-center justify-start">
               <img
                 src="https://cdn-icons-png.flaticon.com/512/5937/5937083.png"
@@ -33,7 +33,7 @@ function Header() {
         <ThemeSwitch />
       </div>
     </header>
-  )
+  );
 }
 
-export default Header
+export default Header;
