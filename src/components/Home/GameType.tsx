@@ -1,28 +1,28 @@
-import clsx from 'clsx'
-import { motion, useMotionValue, useTransform } from 'framer-motion'
-import { useCallback, useMemo, useState } from 'react'
-import { selectSelectedTypes, toggleSelect } from '../../store/features/new'
-import { useAppDispatch, useAppSelector } from '../../store/hooks'
-import { TypeKey } from '../../types'
-import { subTypes, types } from '../../utils'
+import clsx from 'clsx';
+import { motion, useMotionValue, useTransform } from 'framer-motion';
+import { useCallback, useMemo, useState } from 'react';
+import { selectSelectedTypes, toggleSelect } from '../../store/features/new';
+import { useAppDispatch, useAppSelector } from '../../store/hooks';
+import { TypeKey } from '../../types';
+import { subTypes, types } from '../../utils';
 
 interface Props {
-  type: TypeKey
+  type: TypeKey;
 }
 
 function GameType(props: Props) {
-  const selectedTypesState = useAppSelector(selectSelectedTypes)
+  const selectedTypesState = useAppSelector(selectSelectedTypes);
 
-  const dispatch = useAppDispatch()
+  const dispatch = useAppDispatch();
 
   const select = (type: TypeKey) => {
-    dispatch(toggleSelect(type))
-  }
+    dispatch(toggleSelect(type));
+  };
 
   const exists = useMemo(
     () => selectedTypesState.includes(props.type),
     [props.type, selectedTypesState]
-  )
+  );
 
   return (
     <motion.div
@@ -43,7 +43,7 @@ function GameType(props: Props) {
     >
       {props.type.toUpperCase()}
     </motion.div>
-  )
+  );
 }
 
-export default GameType
+export default GameType;

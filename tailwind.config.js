@@ -1,7 +1,7 @@
 // @ts-check
 /* eslint-disable @typescript-eslint/no-var-requires */
-const defaultTheme = require('tailwindcss/defaultTheme')
-const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme');
+const colors = require('tailwindcss/colors');
 
 /** @type {import("tailwindcss/tailwind-config").TailwindConfig } */
 module.exports = {
@@ -9,6 +9,7 @@ module.exports = {
     './**/pages/**/*.tsx',
     './**/components/**/*.tsx',
     './**/layouts/**/*.tsx',
+    './**/lib/**/*.tsx',
     './**/lib/**/*.ts',
   ],
   darkMode: 'class',
@@ -187,4 +188,4 @@ module.exports = {
     },
   },
   plugins: [require('@tailwindcss/typography')],
-}
+};
