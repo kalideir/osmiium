@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { setSettingValue, toggleSelect, toggleTypesVisibility } from '.';
-import { TypeKey } from '../../../types';
+import { setSettingValue, setStepsState, toggleSelect, toggleTypesVisibility } from '.';
+import { StepType, TypeKey } from '../../../types';
 import { init } from './actions';
 
 type NewGameState = {
@@ -11,7 +11,20 @@ type NewGameState = {
   selectedTypes: TypeKey[];
   typesVisible: boolean;
   isInitialized: boolean;
+  steps: {
+    [key: string]: {
+      isStarted: boolean;
+      isEnded: boolean;
+      elements: string[];
+    };
+  };
 };
+
+// [key in Partial<StepType>]: {
+//   isStarted: boolean;
+//   isEnded: boolean;
+//   elements: string[];
+// };
 
 const initialState: NewGameState = {
   numberofTests: 2,
@@ -21,6 +34,7 @@ const initialState: NewGameState = {
   selectedTypes: [],
   typesVisible: true,
   isInitialized: false,
+  steps: {},
 };
 
 export const newGameSlice = createSlice({
@@ -44,6 +58,12 @@ export const newGameSlice = createSlice({
       })
       .addCase(setSettingValue, (state, action) => {
         state[action.payload.name] = action.payload.value;
+      })
+      .addCase(setStepsState, (state, action) => {
+        state.steps[action.payload.stepKey] = {
+          ...state.steps[action.payload.stepKey],
+          [action.payload.target]: action.payload.value,
+        };
       });
   },
 });

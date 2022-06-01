@@ -1,7 +1,12 @@
 import { motion } from 'framer-motion';
-import { useCallback, useEffect, useState } from 'react';
-import { selectNewGameState } from '../../../store/features/new';
-import { useAppSelector } from '../../../store/hooks';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  selectIsGameReady,
+  selectNewGameState,
+  selectSteps,
+  setStepsState,
+} from '../../../store/features/new';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { StepElement, StepType } from '../../../types';
 import { shuffle } from '../../../utils';
 import { generateStepElements } from '../utils/generator';
@@ -11,9 +16,10 @@ interface Props {
 }
 
 export default function GenericStep({ stepKey }: Props) {
-  const [answers, setAnswers] = useState<StepElement<string>[]>([]);
-  const [noise, setNoise] = useState<StepElement<string>[]>([]);
   const newGameState = useAppSelector(selectNewGameState);
+  const stepsState = useAppSelector(selectSteps);
+  const dispatch = useAppDispatch();
+  const isReadyState = useAppSelector(selectIsGameReady);
 
   const generateElements = useCallback(
     (isAnswer = false) => {
@@ -28,22 +34,25 @@ export default function GenericStep({ stepKey }: Props) {
   );
 
   useEffect(() => {
-    setAnswers(generateElements(true));
-    setNoise(generateElements(false));
-  }, [generateElements]);
-
-  const isMemorizeScreen = false;
-
-  const elements = isMemorizeScreen ? answers : shuffle([...answers, ...noise]);
+    if (isReadyState) {
+      dispatch(
+        setStepsState({
+          stepKey,
+          target: 'elements',
+          value: [...generateElements(true), ...generateElements(false)],
+        })
+      );
+    }
+  }, [generateElements, dispatch, stepKey, isReadyState]);
 
   return (
     <div className="flex items-center justify-center flex-wrap w-full mt-10 gap-3">
-      {elements.map((element, index) => (
+      {[].map((element, index) => (
         <motion.div
           className={`bg-blue-500 h-24 min-w-1/5 flex items-center font-bold justify-center rounded-md text-2xl shdow-lg`}
           key={index}
         >
-          {element.value}
+          {/* {stepKey === "IMAGE" ? : element.value} */}
         </motion.div>
       ))}
     </div>
