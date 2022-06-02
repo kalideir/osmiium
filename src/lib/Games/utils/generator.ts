@@ -111,12 +111,12 @@ export const generateRandom = (key: StepType, length: number) => {
 export const generateStepElements = (
   key: StepType,
   numberOfElements: number,
-  tokenSize: number,
-  isAnswer: boolean
+  tokenSize: number
 ) => {
-  const elements = arrayFromT<StepElement<string>>(numberOfElements, () => ({
-    isAnswer,
+  const elements = arrayFromT<StepElement<string>>(numberOfElements, (index: number) => ({
+    isAnswer: index % 2 === 0,
     value: formatElementValue(generateRandom(key, tokenSize)),
+    isEnded: false,
   }));
   return elements;
 };

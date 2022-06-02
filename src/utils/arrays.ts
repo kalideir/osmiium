@@ -1,11 +1,11 @@
-export function arrayFromT<T>(size: number, filler: () => T): T[] {
+export function arrayFromT<T>(size: number, filler: (index: number) => T): T[] {
   return Array(size)
     .fill(null)
-    .map<T>(() => filler());
+    .map<T>((_, index) => filler(index));
 }
 
 export function shuffle<T>(array: T[]): T[] {
-  return array.splice(0).sort(() => Math.random() - 0.5);
+  return array.slice().sort(() => Math.random() - 0.5);
 }
 
 export function random<T>(array: T[]): T {

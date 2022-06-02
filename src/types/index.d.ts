@@ -34,6 +34,7 @@ export type SettingName = 'numberofTests' | 'tokenSize' | 'numberOfElements' | '
 export type StepElement<T extends number | string | Date> = {
   isAnswer: boolean;
   value: T;
+  isEnded: boolean;
 };
 
 export interface IGame {
@@ -51,4 +52,6 @@ export default interface IStep {
   elements: unknown[];
 }
 
-type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
+export type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
+
+export type StepsData = { [key in Partial<StepType>]?: StepElement<string>[] };
