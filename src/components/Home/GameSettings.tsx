@@ -1,33 +1,34 @@
-import { useRouter } from 'next/router';
-import { AnimatePresence, motion } from 'framer-motion';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { AnimatePresence, motion } from 'framer-motion';
+import { nanoid } from 'nanoid';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import { FieldValues, useForm } from 'react-hook-form';
-import { BsCollectionPlay, BsSpeedometer2, BsUiChecksGrid, BsColumnsGap } from 'react-icons/bs';
+import { BsCollectionPlay, BsColumnsGap, BsSpeedometer2 } from 'react-icons/bs';
 import { GiHorizontalFlip } from 'react-icons/gi';
 import * as yup from 'yup';
 import {
   init,
+  selectNewGameState,
   selectTypesVisible,
+  setCurrentStepIndex,
   setSettingValue,
-  toggleTypesVisibility,
 } from '../../store/features/new';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
-
-import React from 'react';
-import { nanoid } from 'nanoid';
-import RangeSlider from './RangeSlider';
 import { SettingName } from '../../types';
+import RangeSlider from './RangeSlider';
 
 const schema = yup.object({
-  tests: yup.number().min(1, 'Required').max(30).required('Number of tests is required'),
-  items: yup.number().min(1, 'Required').max(5).required('Number of items is required'),
-  speed: yup.number().min(1, 'Required').max(10).required('Speed is required'),
-  tokenSize: yup.number().min(1, 'Required').max(10).required('Token size is required'),
+  tests: yup.number().required('Number of tests is required'),
+  items: yup.number().required('Number of items per step is required'),
+  speed: yup.number().min(1, 'Required').required('Speed is required'),
+  tokenSize: yup.number().min(1, 'Required').required('Token size is required'),
 });
 
 export default function GameSteps() {
   const typesVisibleState = useAppSelector(selectTypesVisible);
   const router = useRouter();
+  const newGameState = useAppSelector(selectNewGameState);
   const {
     register,
     handleSubmit,
@@ -36,10 +37,10 @@ export default function GameSteps() {
   } = useForm({
     resolver: yupResolver(schema),
     defaultValues: {
-      tests: 5,
-      items: 3,
-      speed: 5,
-      tokenSize: 3,
+      tests: newGameState.numberofTests || newGameState.selectedTypes.length,
+      items: newGameState.selectedTypes.length,
+      speed: newGameState.speed,
+      tokenSize: newGameState.tokenSize,
     },
   });
 
@@ -53,6 +54,10 @@ export default function GameSteps() {
   const setSetting = (name: SettingName, value: number) => {
     dispatch(setSettingValue({ name, value }));
   };
+
+  useEffect(() => {
+    dispatch(setCurrentStepIndex(0)); // when go back
+  }, [dispatch]);
 
   return (
     <AnimatePresence>
@@ -77,10 +82,10 @@ export default function GameSteps() {
                 </p>
                 <RangeSlider
                   color="bg-sky-400"
-                  initValue={5}
-                  min={1}
-                  max={30}
-                  step={1}
+                  initValue={newGameState.selectedTypes.length}
+                  min={newGameState.selectedTypes.length}
+                  max={Math.max(30, newGameState.selectedTypes.length * 5)}
+                  step={newGameState.selectedTypes.length}
                   name="numberofTests"
                   onChange={setSetting}
                 />
@@ -100,7 +105,7 @@ export default function GameSteps() {
                   color="bg-emerald-400"
                   initValue={3}
                   min={1}
-                  max={5}
+                  max={10}
                   step={1}
                   name="numberOfElements"
                   onChange={setSetting}
@@ -145,9 +150,9 @@ export default function GameSteps() {
                   name="tokenSize"
                   onChange={setSetting}
                 />
-                {errors.items && (
+                {errors.tokenSize && (
                   <div className="text-red-500 font-semibold mt-2 text-xs">
-                    {errors.items.message}
+                    {errors.tokenSize.message}
                   </div>
                 )}
               </div>

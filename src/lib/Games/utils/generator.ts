@@ -8,7 +8,7 @@ const datasource: { [key in StepType]: (() => string | Date)[] } = {
   IMAGE: [
     faker.image.abstract,
     faker.image.animals,
-    faker.image.avatar,
+    // faker.image.avatar,
     faker.image.business,
     faker.image.cats,
     faker.image.city,
@@ -16,7 +16,7 @@ const datasource: { [key in StepType]: (() => string | Date)[] } = {
     faker.image.food,
     faker.image.image,
     faker.image.nature,
-    faker.image.people,
+    // faker.image.people,
     faker.image.sports,
     faker.image.technics,
     faker.image.transport,
@@ -103,6 +103,7 @@ export const getRandomFn = <K extends StepType>(key: StepType): typeof datasourc
   random(datasource[key]);
 
 export const generateRandom = (key: StepType, length: number) => {
+  if (key === 'NUMBER') return faker.unique(faker.random.numeric, [length]);
   const rand = getRandomFn(key);
   if (typeof rand === typeof Date) return rand();
   return faker.unique(rand as (length: number) => string, [length]);

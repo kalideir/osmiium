@@ -1,1 +1,1 @@
-export { default as MultiStepProgressBar } from './MultiStepProgressBar'
+export { default as StepProgressBar } from './StepProgressBar';

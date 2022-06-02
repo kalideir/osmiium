@@ -1,5 +1,5 @@
 import { createAction } from '@reduxjs/toolkit';
-import { SettingName, StepsData, TypeKey } from '../../../types';
+import { SettingName, StepData, TypeKey } from '../../../types';
 
 export const init = createAction('new/init');
 
@@ -9,6 +9,10 @@ export const setSettingValue = createAction<{ name: SettingName; value: number }
   'new/setSettingValue'
 );
 
-export const setStepsState = createAction<StepsData>('new/setStepsState');
+export const setStepsState = createAction<StepData[]>('new/setStepsState');
 
 export const toggleTypesVisibility = createAction<boolean>('new/toggleTypesVisibility');
+
+export const setCurrentStepIndex = createAction<number>('new/setCurrentStepIndex');
+
+export const setIsMemorizeWindow = createAction<boolean>('new/setIsMemorizeWindow');

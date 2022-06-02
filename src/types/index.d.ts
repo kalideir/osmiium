@@ -54,4 +54,4 @@ export default interface IStep {
 
 export type DistributiveOmit<T, K extends keyof any> = T extends any ? Omit<T, K> : never;
 
-export type StepsData = { [key in Partial<StepType>]?: StepElement<string>[] };
+export type StepData = { key: StepType; elements: StepElement<string>[] };

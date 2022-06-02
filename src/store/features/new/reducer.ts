@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { setSettingValue, setStepsState, toggleSelect, toggleTypesVisibility } from '.';
-import { StepsData, TypeKey } from '../../../types';
+import {
+  setCurrentStepIndex,
+  setIsMemorizeWindow,
+  setSettingValue,
+  setStepsState,
+  toggleSelect,
+  toggleTypesVisibility,
+} from '.';
+import { StepData, TypeKey } from '../../../types';
 import { init } from './actions';
 
 type NewGameState = {
@@ -11,18 +18,22 @@ type NewGameState = {
   selectedTypes: TypeKey[];
   typesVisible: boolean;
   isInitialized: boolean;
-  steps: StepsData;
+  steps: StepData[];
+  currentStepIndex: number;
+  isMemorizeWindow: boolean;
 };
 
 const initialState: NewGameState = {
-  numberofTests: 2,
+  numberofTests: 0,
   tokenSize: 3,
   numberOfElements: 3,
   speed: 5,
   selectedTypes: [],
   typesVisible: true,
   isInitialized: false,
-  steps: {},
+  steps: [],
+  currentStepIndex: 0,
+  isMemorizeWindow: true,
 };
 
 export const newGameSlice = createSlice({
@@ -37,6 +48,7 @@ export const newGameSlice = createSlice({
           return;
         }
         state.selectedTypes = state.selectedTypes.filter((type) => type !== action.payload);
+        state.numberofTests = state.selectedTypes.length;
       })
       .addCase(toggleTypesVisibility, (state, action) => {
         state.typesVisible = action.payload;
@@ -49,6 +61,13 @@ export const newGameSlice = createSlice({
       })
       .addCase(setStepsState, (state, action) => {
         state.steps = action.payload;
+      })
+      .addCase(setCurrentStepIndex, (state, action) => {
+        state.currentStepIndex = action.payload;
+        state.isMemorizeWindow = true;
+      })
+      .addCase(setIsMemorizeWindow, (state, action) => {
+        state.isMemorizeWindow = action.payload;
       });
   },
 });
