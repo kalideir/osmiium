@@ -36,7 +36,7 @@ function GameType(props: Props) {
       }}
       className={clsx(
         !exists && 'bg-indigo-500',
-        'cursor-pointer h-24 font-bold text-white md:h-20 xs:h-20 sm:h-20 flex text-center items-center justify-center rounded-md text-xl sm:text-sm xs:text-xs',
+        'cursor-pointer h-24 font-bold text-white md:h-20 xs:h-20 sm:h-20 flex text-center items-center justify-center rounded-md text-lg sm:text-sm xs:text-xs',
         exists && 'bg-green-500'
       )}
     >

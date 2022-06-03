@@ -17,3 +17,5 @@ export const selectSteps = (state: RootState) => state.new.steps;
 export const selectCurrentStepIndex = (state: RootState) => state.new.currentStepIndex;
 
 export const selectIsMemorizeWindow = (state: RootState) => state.new.isMemorizeWindow;
+
+export const selectUserAnswers = (state: RootState) => state.new.userAnswers;

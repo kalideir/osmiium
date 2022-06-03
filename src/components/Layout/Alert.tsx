@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react'
-import clsx from 'clsx'
+import React, { useEffect, useState } from 'react';
+import clsx from 'clsx';
 
 interface Props {
-  type: 'success' | 'danger' | 'info' | 'default' | 'warning'
-  isVibile: boolean
-  message: string
-  autoHide: boolean
-  closable: true
-  show?: boolean
-  LeftIcon?: () => JSX.Element
+  type: 'success' | 'danger' | 'info' | 'default' | 'warning';
+  isVibile: boolean;
+  message: string;
+  autoHide: boolean;
+  closable: true;
+  show?: boolean;
+  LeftIcon?: () => JSX.Element;
 }
 enum COLORS {
   success = 'green',
@@ -19,16 +19,16 @@ enum COLORS {
 }
 
 function Alert({ show = true, type, message, autoHide, closable, LeftIcon }: Props) {
-  const [isVisible, setIsVisible] = useState(show)
+  const [isVisible, setIsVisible] = useState(show);
 
   useEffect(() => {
     if (autoHide) {
-      const timer = setTimeout(() => setIsVisible(false), 10000)
-      return () => clearTimeout(timer)
+      const timer = setTimeout(() => setIsVisible(false), 10000);
+      return () => clearTimeout(timer);
     }
-  }, [isVisible, autoHide])
+  }, [isVisible, autoHide]);
 
-  if (!isVisible) return null
+  if (!isVisible) return null;
 
   return (
     <>
@@ -47,7 +47,7 @@ function Alert({ show = true, type, message, autoHide, closable, LeftIcon }: Pro
         {closable && (
           <button
             type="button"
-            className="ml-auto -mx-1.5 -my-1.5 bg-blue-100 text-blue-500 rounded-lg focus:ring-2 focus:ring-blue-400 p-1.5 hover:bg-blue-200 inline-flex h-8 w-8 dark:bg-blue-200 dark:text-blue-600 dark:hover:bg-blue-300"
+            className="ml-auto -mx-1.5 -my-1.5 bg-indigo-100 text-indigo-500 rounded-lg focus:ring-2 focus:ring-indigo-400 p-1.5 hover:bg-indigo-200 inline-flex h-8 w-8 dark:bg-indigo-200 dark:text-indigo-600 dark:hover:bg-indigo-300"
             data-dismiss-target="#alert-1"
             aria-label="Close"
             onClick={() => setIsVisible(false)}
@@ -69,7 +69,7 @@ function Alert({ show = true, type, message, autoHide, closable, LeftIcon }: Pro
         )}
       </div>
     </>
-  )
+  );
 }
 
-export default Alert
+export default Alert;

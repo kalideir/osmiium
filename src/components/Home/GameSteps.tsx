@@ -47,7 +47,7 @@ export default function GameSteps() {
                 }}
                 onClick={() => (typesVisibleState ? hideTypes() : showTypes())}
                 type="button"
-                className="flex mx-auto py-2 px-16 mt-10 mb-2 text-sm font-bold focus:outline-none rounded-full border border-blue-200 bg-gray-100 text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600"
+                className="flex mx-auto py-2 px-16 mt-10 mb-2 text-sm font-bold focus:outline-none rounded-full border border-indigo-200 bg-gray-100 text-indigo-700 focus:z-10 focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600"
               >
                 CONTINUE
               </motion.button>
