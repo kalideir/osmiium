@@ -7,7 +7,6 @@ export default function useTimeProgress(period: Period): [number, (value: number
   const initDateRef = useRef(Date.now());
   const newGameState = useAppSelector(selectNewGameState);
   const [percentage, setPercentage] = useState(0);
-  console.log(initDateRef.current, 'x');
 
   useEffect(() => {
     initDateRef.current = Date.now();

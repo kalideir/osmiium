@@ -1,10 +1,9 @@
 import clsx from 'clsx';
-import { motion, useMotionValue, useTransform } from 'framer-motion';
-import { useCallback, useMemo, useState } from 'react';
+import { motion } from 'framer-motion';
+import { useMemo } from 'react';
 import { selectSelectedTypes, toggleSelect } from '../../store/features/new';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { TypeKey } from '../../types';
-import { subTypes, types } from '../../utils';
 
 interface Props {
   type: TypeKey;

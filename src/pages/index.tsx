@@ -1,11 +1,10 @@
-import React, { LegacyRef, useEffect, useMemo, useRef, useState } from 'react'
-
-import { NewGameForm } from '../components'
+import React, { useEffect, useState } from 'react';
+import { NewGameForm } from '../components';
 
 export default function App() {
-  const [mounted, setMounted] = useState(false)
+  const [mounted, setMounted] = useState(false);
 
-  useEffect(() => setMounted(true), [])
+  useEffect(() => setMounted(true), []);
 
   return (
     <div className="p-3">
@@ -16,5 +15,5 @@ export default function App() {
       </div>
       <NewGameForm />
     </div>
-  )
+  );
 }

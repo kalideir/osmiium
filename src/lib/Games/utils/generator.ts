@@ -1,9 +1,9 @@
 import { faker } from '@faker-js/faker';
 import { StepElement, StepType } from '../../../types';
-import { arrayFromT, random } from '../../../utils';
+import { arrayFromT, random, shuffle } from '../../../utils';
 import { formatElementValue } from './formatters';
 
-const datasource: { [key in StepType]: (() => string | Date)[] } = {
+const datasource: Record<StepType, (() => string | Date)[]> = {
   NUMBER: [faker.random.numeric],
   IMAGE: [
     faker.image.abstract,
@@ -12,12 +12,12 @@ const datasource: { [key in StepType]: (() => string | Date)[] } = {
     faker.image.business,
     faker.image.cats,
     faker.image.city,
-    faker.image.fashion,
+    // faker.image.fashion,
     faker.image.food,
     faker.image.image,
     faker.image.nature,
     // faker.image.people,
-    faker.image.sports,
+    // faker.image.sports,
     faker.image.technics,
     faker.image.transport,
   ],
@@ -28,9 +28,9 @@ const datasource: { [key in StepType]: (() => string | Date)[] } = {
     faker.address.county,
     faker.address.latitude,
     faker.address.longitude,
-    faker.address.state,
-    faker.address.secondaryAddress,
-    faker.address.street,
+    // faker.address.state,
+    // faker.address.secondaryAddress,
+    // faker.address.street,
     faker.address.timeZone,
     faker.address.zipCode,
   ],
@@ -102,24 +102,33 @@ const datasource: { [key in StepType]: (() => string | Date)[] } = {
 export const getRandomFn = <K extends StepType>(key: StepType): typeof datasource[K][number] =>
   random(datasource[key]);
 
-export const generateRandom = (key: StepType, length: number) => {
-  if (key === 'NUMBER') return faker.unique(faker.random.numeric, [length]);
-  const rand = getRandomFn(key);
-  if (typeof rand === typeof Date) return rand();
-  return faker.unique(rand as (length: number) => string, [length]);
+export const generateRandom = (
+  randomFc: ReturnType<typeof getRandomFn>,
+  key: StepType,
+  length: number
+) => {
+  if (key === 'NUMBER') return faker.random.numeric(length);
+  /*
+  - adding randomness to prevent the browser from caching the images since the api uses one url for retrieving images
+  - needs refactor
+   */
+  if (key === 'IMAGE') return `${`${randomFc()}?random=?` + Math.round(Math.random() * 1000)}`;
+  if (key === 'DATE') return randomFc();
+  return randomFc(); // faker.unique() // as (length: number) => string, [length])
 };
 
 export const generateStepElements = (
+  randomFc: ReturnType<typeof getRandomFn>,
   key: StepType,
   numberOfElements: number,
   tokenSize: number
 ) => {
   const elements = arrayFromT<StepElement<string>>(numberOfElements, (index: number) => ({
     isAnswer: index % 2 === 0,
-    value: formatElementValue(generateRandom(key, tokenSize)),
+    value: formatElementValue(generateRandom(randomFc, key, tokenSize)),
     isEnded: false,
   }));
-  return elements;
+  return shuffle(elements);
 };
 
 export default datasource;

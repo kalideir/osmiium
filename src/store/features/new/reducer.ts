@@ -43,8 +43,10 @@ export const newGameSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(toggleSelect, (state, action) => {
+        console.log(action.payload, 46);
         if (!state.selectedTypes.includes(action.payload)) {
           state.selectedTypes.push(action.payload);
+          state.numberofTests = state.selectedTypes.length;
           return;
         }
         state.selectedTypes = state.selectedTypes.filter((type) => type !== action.payload);

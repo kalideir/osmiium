@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import { useEffect } from 'react';
 import { useTimeProgress } from '../../hooks';
 import { selectNewGameState } from '../../store/features/new';
 import { useAppSelector } from '../../store/hooks';
@@ -8,9 +7,6 @@ import { Period } from '../../types';
 function StepProgressBar() {
   const newGameState = useAppSelector(selectNewGameState);
   const [progress] = useTimeProgress(newGameState.speed as Period);
-
-  if (!newGameState.isMemorizeWindow || newGameState.currentStepIndex > newGameState.steps.length)
-    return null;
 
   return (
     <div className="w-full overflow-x-scroll no-scrollbar">
