@@ -1,5 +1,4 @@
 import { AnimatePresence, motion } from 'framer-motion';
-import { useEffect } from 'react';
 import {
   selectNewGameState,
   selectTypesVisible,

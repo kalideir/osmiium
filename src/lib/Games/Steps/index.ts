@@ -1,2 +1,1 @@
-export type { default as BaseStep } from './BaseStep';
-export { default as NumberStep } from './NumberStep';
+export { default as GenericStep } from './GenericStep';
