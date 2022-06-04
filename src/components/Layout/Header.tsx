@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { ThemeSwitch } from '.';
-import { toggleTypesVisibility } from '../../store/features/new';
+import { reset } from '../../store/features/new';
 import { useAppDispatch } from '../../store/hooks';
 
 function Header() {
@@ -13,7 +13,7 @@ function Header() {
           <div className="flex items-center cursor-pointer justify-between">
             <div className="text-2xl font-semibold sm:block flex items-center justify-start">
               <h1
-                onClick={() => dispatch(toggleTypesVisibility(true))}
+                onClick={() => dispatch(reset())}
                 className="text-4xl font-semibold 
   bg-gradient-to-r bg-clip-text  text-transparent 
   from-gray-900 via-indigo-500 to-gray-800

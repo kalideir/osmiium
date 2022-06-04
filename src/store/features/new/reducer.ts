@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   selectStepElement,
   setCurrentStepIndex,
@@ -23,8 +23,9 @@ type NewGameState = {
   steps: StepData[];
   currentStepIndex: number;
   isMemorizeWindow: boolean;
-  userAnswers: { [stepIndex: number]: string[] };
+  userAnswers: { [stepIndex: number]: { value: string; isAnswer: boolean }[] };
   lastAnimatedStep: number;
+  showResults: boolean;
 };
 
 const initialState: NewGameState = {
@@ -40,12 +41,18 @@ const initialState: NewGameState = {
   isMemorizeWindow: true,
   userAnswers: [],
   lastAnimatedStep: -1,
+  showResults: false,
 };
 
 export const newGameSlice = createSlice({
   name: 'new',
   initialState,
-  reducers: {},
+  reducers: {
+    showResults: (state, action: PayloadAction<boolean>) => {
+      state.showResults = action.payload;
+    },
+    reset: () => initialState,
+  },
   extraReducers: (builder) => {
     builder
       .addCase(toggleSelect, (state, action) => {
@@ -82,10 +89,12 @@ export const newGameSlice = createSlice({
       .addCase(selectStepElement, (state, action) => {
         state.userAnswers[action.payload.stepIndex] = [
           ...(state.userAnswers[action.payload.stepIndex] || []),
-          action.payload.value,
+          { value: action.payload.value, isAnswer: action.payload.isAnswer },
         ];
       });
   },
 });
 
 export const newGameReducer = newGameSlice.reducer;
+
+export const { showResults, reset } = newGameSlice.actions;

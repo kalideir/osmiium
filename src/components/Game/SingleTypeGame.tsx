@@ -1,12 +1,12 @@
 import { motion } from 'framer-motion';
 import { useEffect, useMemo } from 'react';
-import { StepProgressBar } from '../../components';
-import { selectNewGameState, setStepsState } from '../../store/features/new';
+import { Results, StepProgressBar } from '.';
+import { selectNewGameState, setStepsState, showResults } from '../../store/features/new';
 import { useAppDispatch, useAppSelector } from '../../store/hooks';
 import { StepData } from '../../types';
 import { arrayFromT, shuffle } from '../../utils';
+import { generateStepElements, getRandomFn } from '../../utils/generator';
 import { GenericStep } from './Steps';
-import { generateStepElements, getRandomFn } from './utils/generator';
 
 export default function SingleTypedGame() {
   const newGameState = useAppSelector(selectNewGameState);
@@ -16,7 +16,6 @@ export default function SingleTypedGame() {
     const n = Math.floor(newGameState.numberofTests / newGameState.selectedTypes.length);
     const stepsData = newGameState.selectedTypes.reduce<StepData[]>((acc, key) => {
       const randomFc = getRandomFn(key);
-
       const stepRepeated = arrayFromT(n, (_) => ({
         key,
         elements: generateStepElements(
@@ -44,6 +43,8 @@ export default function SingleTypedGame() {
     [newGameState.currentStepIndex, newGameState.steps]
   );
 
+  // return <Results />;
+
   return (
     <motion.div className="w-full">
       <div className="px-5 bg-zinc-100 dark:bg-zinc-900 py-4 h-8 rounded-lg">
@@ -63,7 +64,7 @@ export default function SingleTypedGame() {
           >
             <div className="flex space-x-2 mt-10 justify-center">
               <button
-                // onClick={moveNext}
+                onClick={() => dispatch(showResults(true))}
                 type="button"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
