@@ -1,7 +1,7 @@
-import React from 'react'
+import React from 'react';
 
 function GridSelect() {
-  return <div>GridSelect</div>
+  return <div>GridSelect</div>;
 }
 
-export default GridSelect
+export default GridSelect;
