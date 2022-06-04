@@ -20,6 +20,7 @@ const reducer = (state: ReturnType<typeof combinedReducer>, action: AnyAction) =
 
 export const makeStore = () =>
   configureStore({
+    //@ts-ignore
     reducer,
   });
 
