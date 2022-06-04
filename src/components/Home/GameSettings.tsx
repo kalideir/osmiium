@@ -122,7 +122,7 @@ export default function GameSteps() {
                   Speed
                 </p>
                 <RangeSlider
-                  color="bg-blue-400"
+                  color="bg-indigo-400"
                   initValue={5}
                   min={1}
                   max={10}

@@ -1,40 +1,130 @@
-/* eslint-disable @next/next/no-img-element */
+import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import moment from 'moment';
-import React, { memo } from 'react';
+import Image from 'next/image';
+import React, { memo, useEffect, useMemo, useRef } from 'react';
+import { BsCheck, BsX } from 'react-icons/bs';
+import {
+  selectNewGameState,
+  selectStepElement,
+  selectUserAnswers,
+} from '../../../store/features/new';
+import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { StepType } from '../../../types';
 
 interface Props {
   stepKey: StepType;
   value: string;
+  index: number;
+  isAnswer: boolean;
 }
 
-function Value({ stepKey, value }: Props) {
+function Value({ stepKey, value }: Omit<Props, 'index' | 'isAnswer'>) {
   if (stepKey === 'IMAGE') {
     return (
-      <motion.div className={`h-full w-full flex items-center justify-center rounded-md shdow-lg`}>
-        <img src={value} alt="value" className="w-full h-full" />
-      </motion.div>
+      <div className={`rounded-md shdow-lg`} style={{ width: '100%', height: '100%' }}>
+        <Image
+          src={value}
+          alt=""
+          title=""
+          width="100%"
+          height="100%"
+          layout="responsive"
+          objectFit="cover"
+        />
+      </div>
     );
   }
   if (stepKey === 'DATE') {
     return (
-      <motion.div
-        className={`bg-blue-500 h-24 w-full flex items-center justify-center rounded-md shdow-lg`}
-      >
+      <div className={`flex h-full w-full items-center justify-center rounded-md shdow-lg`}>
         {moment(value).isValid() ? moment(value).format('YYYY/MM/DD HH:mm') : value}
-      </motion.div>
+      </div>
     );
   } else {
     return (
-      <motion.div
-        // style={{ minWidth: '10rem' }}
-        className={`bg-blue-500 h-24 w-full flex items-center justify-center rounded-md shdow-lg`}
+      <div
+        className={clsx(
+          value.length > 10 && 'text-sm',
+          `h-full w-full flex items-center justify-center rounded-md shdow-lg`
+        )}
       >
         {value}
-      </motion.div>
+      </div>
     );
   }
 }
 
-export default memo(Value);
+function Wrapper({ stepKey, value, isAnswer, index }: Props) {
+  const newGameState = useAppSelector(selectNewGameState);
+  const userAnswers = useAppSelector(selectUserAnswers);
+  const dispatch = useAppDispatch();
+  const isClickable = useRef(true);
+  const selectCount = userAnswers[newGameState.currentStepIndex]?.length || 0;
+  const selectElement = () => {
+    !newGameState.isMemorizeWindow &&
+      selectCount < newGameState.numberOfElements &&
+      dispatch(selectStepElement({ stepIndex: newGameState.currentStepIndex, value }));
+    isClickable.current = false;
+  };
+
+  const hasAnimated = useRef(false);
+  const noAnimationVarient = { opacity: 1, translateX: 0, translateY: 0 };
+  useEffect(() => {
+    hasAnimated.current = true;
+  }, []);
+
+  const currStepWasAnimated = useMemo(
+    () =>
+      !newGameState.isMemorizeWindow &&
+      newGameState.lastAnimatedStep === newGameState.currentStepIndex,
+    [newGameState.lastAnimatedStep, newGameState.isMemorizeWindow, newGameState.currentStepIndex]
+  );
+
+  const isSelected = useMemo(
+    () => userAnswers[newGameState.currentStepIndex]?.includes(value),
+    [newGameState.currentStepIndex, userAnswers, value]
+  );
+
+  return (
+    <motion.div
+      className={clsx(
+        'bg-indigo-500 box-border rounded-md relative',
+        stepKey !== 'IMAGE' && 'h-20',
+        !newGameState.isMemorizeWindow && 'cursor-pointer',
+        isSelected && !isAnswer && 'bg-red-500',
+        isSelected && isAnswer && 'bg-green-500'
+      )}
+      initial={
+        currStepWasAnimated
+          ? noAnimationVarient
+          : {
+              opacity: 0,
+              translateX: -50,
+              translateY: -50,
+            }
+      }
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 2 }}
+      onClick={() => !isSelected && selectElement()}
+      animate={{ opacity: 1, translateX: 0, translateY: 0 }}
+      transition={{ duration: 0.2, delay: index * 0.05 }}
+    >
+      <Value stepKey={stepKey} value={value} />
+      {isSelected && (
+        <div
+          className={clsx(
+            'absolute top-1 left-1 flex items-center justify-center h-7 w-7 rounded-full',
+            stepKey !== 'IMAGE' && 'hidden',
+            isAnswer && 'bg-green-500',
+            !isAnswer && 'bg-red-500'
+          )}
+        >
+          {isAnswer ? <BsCheck className="" /> : <BsX />}
+        </div>
+      )}
+    </motion.div>
+  );
+}
+
+export default memo(Wrapper);

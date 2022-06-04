@@ -1,7 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
 import {
+  selectStepElement,
   setCurrentStepIndex,
   setIsMemorizeWindow,
+  setLastAnimatedStep,
   setSettingValue,
   setStepsState,
   toggleSelect,
@@ -21,6 +23,8 @@ type NewGameState = {
   steps: StepData[];
   currentStepIndex: number;
   isMemorizeWindow: boolean;
+  userAnswers: { [stepIndex: number]: string[] };
+  lastAnimatedStep: number;
 };
 
 const initialState: NewGameState = {
@@ -34,6 +38,8 @@ const initialState: NewGameState = {
   steps: [],
   currentStepIndex: 0,
   isMemorizeWindow: true,
+  userAnswers: [],
+  lastAnimatedStep: -1,
 };
 
 export const newGameSlice = createSlice({
@@ -45,6 +51,7 @@ export const newGameSlice = createSlice({
       .addCase(toggleSelect, (state, action) => {
         if (!state.selectedTypes.includes(action.payload)) {
           state.selectedTypes.push(action.payload);
+          state.numberofTests = state.selectedTypes.length;
           return;
         }
         state.selectedTypes = state.selectedTypes.filter((type) => type !== action.payload);
@@ -53,7 +60,7 @@ export const newGameSlice = createSlice({
       .addCase(toggleTypesVisibility, (state, action) => {
         state.typesVisible = action.payload;
       })
-      .addCase(init, (state, action) => {
+      .addCase(init, (state) => {
         state.isInitialized = true;
       })
       .addCase(setSettingValue, (state, action) => {
@@ -68,6 +75,15 @@ export const newGameSlice = createSlice({
       })
       .addCase(setIsMemorizeWindow, (state, action) => {
         state.isMemorizeWindow = action.payload;
+      })
+      .addCase(setLastAnimatedStep, (state, action) => {
+        state.lastAnimatedStep = action.payload;
+      })
+      .addCase(selectStepElement, (state, action) => {
+        state.userAnswers[action.payload.stepIndex] = [
+          ...(state.userAnswers[action.payload.stepIndex] || []),
+          action.payload.value,
+        ];
       });
   },
 });
