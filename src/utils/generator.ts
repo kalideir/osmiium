@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
-import { StepElement, StepType } from '../../../types';
-import { arrayFromT, random, removeDuplicates, shuffle } from '../../../utils';
+import { StepElement, StepType } from '../types';
+import { arrayFromT, random, removeDuplicates, shuffle } from '.';
 import { formatElementValue } from './formatters';
 
 const datasource: Record<StepType, (() => string | Date)[]> = {

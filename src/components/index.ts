@@ -1,3 +1,3 @@
-export * from './Home'
-export * from './Layout'
-export * from './Game'
+export * from './Home';
+export * from './Layout';
+export * from './Game';

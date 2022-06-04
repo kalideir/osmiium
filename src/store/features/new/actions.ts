@@ -19,6 +19,8 @@ export const setIsMemorizeWindow = createAction<boolean>('new/setIsMemorizeWindo
 
 export const setLastAnimatedStep = createAction<number>('new/setLastAnimatedStep');
 
-export const selectStepElement = createAction<{ stepIndex: number; value: string }>(
-  'new/selectStepElement'
-);
+export const selectStepElement = createAction<{
+  stepIndex: number;
+  value: string;
+  isAnswer: boolean;
+}>('new/selectStepElement');

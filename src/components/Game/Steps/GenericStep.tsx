@@ -62,13 +62,22 @@ export default function GenericStep({ stepKey, elements }: Props) {
     /*
     user has used all his chances
     */
-    if (userAnswers[newGameState.currentStepIndex]?.length === newGameState.numberOfElements) {
+    if (
+      userAnswers[newGameState.currentStepIndex]?.length === newGameState.numberOfElements &&
+      newGameState.currentStepIndex < newGameState.steps.length - 1
+    ) {
       const timeout = setTimeout(() => {
         moveNext();
       }, 200);
       return () => clearTimeout(timeout);
     }
-  }, [userAnswers, newGameState.currentStepIndex, newGameState.numberOfElements, moveNext]);
+  }, [
+    userAnswers,
+    newGameState.currentStepIndex,
+    newGameState.numberOfElements,
+    moveNext,
+    newGameState.steps.length,
+  ]);
 
   return (
     <>

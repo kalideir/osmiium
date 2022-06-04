@@ -64,7 +64,7 @@ function Wrapper({ stepKey, value, isAnswer, index }: Props) {
   const selectElement = () => {
     !newGameState.isMemorizeWindow &&
       selectCount < newGameState.numberOfElements &&
-      dispatch(selectStepElement({ stepIndex: newGameState.currentStepIndex, value }));
+      dispatch(selectStepElement({ stepIndex: newGameState.currentStepIndex, value, isAnswer }));
     isClickable.current = false;
   };
 
@@ -82,7 +82,7 @@ function Wrapper({ stepKey, value, isAnswer, index }: Props) {
   );
 
   const isSelected = useMemo(
-    () => userAnswers[newGameState.currentStepIndex]?.includes(value),
+    () => !!userAnswers[newGameState.currentStepIndex]?.find((element) => element.value === value),
     [newGameState.currentStepIndex, userAnswers, value]
   );
 
