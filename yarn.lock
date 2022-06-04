@@ -2625,7 +2625,7 @@
     "loose-envify" "^1.1.0"
     "scheduler" "^0.22.0"
 
-"react-hook-form@^7.0.0":
+"react-hook-form@^7.0.0", "react-hook-form@^7.31.3":
   "integrity" "sha512-NVZdCWViIWXXXlQ3jxVQH0NuNfwPf8A/0KvuCxrM9qxtP1qYosfR2ZudarziFrVOC7eTUbWbm1T4OyYCwv9oSQ=="
   "resolved" "https://registry.npmjs.org/react-hook-form/-/react-hook-form-7.31.3.tgz"
   "version" "7.31.3"
