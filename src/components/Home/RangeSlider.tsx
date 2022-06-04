@@ -60,8 +60,10 @@ const RangeSlider = (props: {
 
   return (
     <motion.div ref={containerRef} className="relative w-full h-5 px-2 bg-gray-300 rounded-full">
+      {/* @ts-ignore */}
       <motion.div ref={truckRef} className="relative w-full">
         <motion.span
+          //@ts-ignore
           ref={thumbRef}
           tabIndex={0}
           drag="x"
