@@ -11,3 +11,10 @@ export function shuffle<T>(array: T[]): T[] {
 export function random<T>(array: T[]): T {
   return array[Math.floor(Math.random() * array.length)]; // math.random -> 0 - 1
 }
+
+export function removeDuplicates<T>(array: T[], existsFn: (array: T[], item: T) => boolean): T[] {
+  return array.reduce<T[]>((acc, curr) => {
+    !existsFn(acc, curr) && acc.push(curr);
+    return acc;
+  }, []);
+}

@@ -17,6 +17,8 @@ export const setCurrentStepIndex = createAction<number>('new/setCurrentStepIndex
 
 export const setIsMemorizeWindow = createAction<boolean>('new/setIsMemorizeWindow');
 
+export const setLastAnimatedStep = createAction<number>('new/setLastAnimatedStep');
+
 export const selectStepElement = createAction<{ stepIndex: number; value: string }>(
   'new/selectStepElement'
 );

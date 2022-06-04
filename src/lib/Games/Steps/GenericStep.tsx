@@ -1,8 +1,10 @@
-import { useEffect, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import {
   selectNewGameState,
+  selectUserAnswers,
   setCurrentStepIndex,
   setIsMemorizeWindow,
+  setLastAnimatedStep,
 } from '../../../store/features/new';
 import { useAppDispatch, useAppSelector } from '../../../store/hooks';
 import { StepElement, StepType } from '../../../types';
@@ -18,6 +20,7 @@ export default function GenericStep({ stepKey, elements }: Props) {
   const newGameState = useAppSelector(selectNewGameState);
   const initDate = useRef(Date.now());
   const dispatch = useAppDispatch();
+  const userAnswers = useAppSelector(selectUserAnswers);
 
   useEffect(() => {
     initDate.current = Date.now();
@@ -35,9 +38,9 @@ export default function GenericStep({ stepKey, elements }: Props) {
     }
   }, [dispatch, newGameState.isMemorizeWindow, newGameState.speed]);
 
-  const moveNext = () => {
-    dispatch(setCurrentStepIndex(newGameState.currentStepIndex + 1));
-  };
+  const moveNext = useCallback(() => {
+    return dispatch(setCurrentStepIndex(newGameState.currentStepIndex + 1));
+  }, [dispatch, newGameState.currentStepIndex]);
 
   const currElements = useMemo(
     () =>
@@ -46,6 +49,26 @@ export default function GenericStep({ stepKey, elements }: Props) {
       ),
     [newGameState.isMemorizeWindow, elements]
   );
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      !newGameState.isMemorizeWindow &&
+        dispatch(setLastAnimatedStep(newGameState.currentStepIndex));
+    }, 200);
+    return () => clearTimeout(timeout);
+  }, [newGameState.currentStepIndex, newGameState.isMemorizeWindow, dispatch]);
+
+  useEffect(() => {
+    /*
+    user has used all his chances
+    */
+    if (userAnswers[newGameState.currentStepIndex]?.length === newGameState.numberOfElements) {
+      const timeout = setTimeout(() => {
+        moveNext();
+      }, 200);
+      return () => clearTimeout(timeout);
+    }
+  }, [userAnswers, newGameState.currentStepIndex, newGameState.numberOfElements, moveNext]);
 
   return (
     <>

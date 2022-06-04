@@ -1,9 +1,9 @@
-/* eslint-disable @next/next/no-img-element */
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 import moment from 'moment';
 import Image from 'next/image';
-import React, { memo, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { memo, useEffect, useMemo, useRef } from 'react';
+import { BsCheck, BsX } from 'react-icons/bs';
 import {
   selectNewGameState,
   selectStepElement,
@@ -37,9 +37,7 @@ function Value({ stepKey, value }: Omit<Props, 'index' | 'isAnswer'>) {
   }
   if (stepKey === 'DATE') {
     return (
-      <div
-        className={`bg-indigo-500 h-24 w-auto flex items-center justify-center rounded-md shdow-lg`}
-      >
+      <div className={`flex h-full w-full items-center justify-center rounded-md shdow-lg`}>
         {moment(value).isValid() ? moment(value).format('YYYY/MM/DD HH:mm') : value}
       </div>
     );
@@ -48,7 +46,7 @@ function Value({ stepKey, value }: Omit<Props, 'index' | 'isAnswer'>) {
       <div
         className={clsx(
           value.length > 10 && 'text-sm',
-          `bg-indigo-500 h-24 w-auto flex items-center justify-center rounded-md shdow-lg`
+          `h-full w-full flex items-center justify-center rounded-md shdow-lg`
         )}
       >
         {value}
@@ -59,39 +57,72 @@ function Value({ stepKey, value }: Omit<Props, 'index' | 'isAnswer'>) {
 
 function Wrapper({ stepKey, value, isAnswer, index }: Props) {
   const newGameState = useAppSelector(selectNewGameState);
-  const [answered, setAnswered] = useState(false);
   const userAnswers = useAppSelector(selectUserAnswers);
   const dispatch = useAppDispatch();
+  const isClickable = useRef(true);
   const selectCount = userAnswers[newGameState.currentStepIndex]?.length || 0;
   const selectElement = () => {
     !newGameState.isMemorizeWindow &&
       selectCount < newGameState.numberOfElements &&
       dispatch(selectStepElement({ stepIndex: newGameState.currentStepIndex, value }));
+    isClickable.current = false;
   };
 
-  const wasAnimated = useRef(false);
-
+  const hasAnimated = useRef(false);
+  const noAnimationVarient = { opacity: 1, translateX: 0, translateY: 0 };
   useEffect(() => {
-    wasAnimated.current = true;
+    hasAnimated.current = true;
   }, []);
+
+  const currStepWasAnimated = useMemo(
+    () =>
+      !newGameState.isMemorizeWindow &&
+      newGameState.lastAnimatedStep === newGameState.currentStepIndex,
+    [newGameState.lastAnimatedStep, newGameState.isMemorizeWindow, newGameState.currentStepIndex]
+  );
+
+  const isSelected = useMemo(
+    () => userAnswers[newGameState.currentStepIndex]?.includes(value),
+    [newGameState.currentStepIndex, userAnswers, value]
+  );
 
   return (
     <motion.div
-      onClick={() => selectElement()}
       className={clsx(
-        isAnswer && 'border-green-500 border p-3',
-        !newGameState.isMemorizeWindow && 'cursor-pointer'
+        'bg-indigo-500 box-border rounded-md relative',
+        stepKey !== 'IMAGE' && 'h-20',
+        !newGameState.isMemorizeWindow && 'cursor-pointer',
+        isSelected && !isAnswer && 'bg-red-500',
+        isSelected && isAnswer && 'bg-green-500'
       )}
-      viewport={{ once: true }}
-      initial={{
-        opacity: !wasAnimated.current ? 0 : 1,
-        translateX: -50,
-        translateY: -50,
-      }}
+      initial={
+        currStepWasAnimated
+          ? noAnimationVarient
+          : {
+              opacity: 0,
+              translateX: -50,
+              translateY: -50,
+            }
+      }
+      whileHover={{ scale: 1.1 }}
+      whileTap={{ scale: 2 }}
+      onClick={() => !isSelected && selectElement()}
       animate={{ opacity: 1, translateX: 0, translateY: 0 }}
       transition={{ duration: 0.2, delay: index * 0.05 }}
     >
       <Value stepKey={stepKey} value={value} />
+      {isSelected && (
+        <div
+          className={clsx(
+            'absolute top-1 left-1 flex items-center justify-center h-7 w-7 rounded-full',
+            stepKey !== 'IMAGE' && 'hidden',
+            isAnswer && 'bg-green-500',
+            !isAnswer && 'bg-red-500'
+          )}
+        >
+          {isAnswer ? <BsCheck className="" /> : <BsX />}
+        </div>
+      )}
     </motion.div>
   );
 }

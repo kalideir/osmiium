@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 import { StepElement, StepType } from '../../../types';
-import { arrayFromT, random, shuffle } from '../../../utils';
+import { arrayFromT, random, removeDuplicates, shuffle } from '../../../utils';
 import { formatElementValue } from './formatters';
 
 const datasource: Record<StepType, (() => string | Date)[]> = {
@@ -86,7 +86,7 @@ const datasource: Record<StepType, (() => string | Date)[]> = {
     faker.word.verb,
   ],
   FINANCE: [
-    faker.finance.mask,
+    // faker.finance.mask,
     faker.finance.account,
     faker.finance.iban,
     faker.finance.currencyName,
@@ -123,11 +123,17 @@ export const generateStepElements = (
   numberOfElements: number,
   tokenSize: number
 ) => {
-  const elements = arrayFromT<StepElement<string>>(numberOfElements, (index: number) => ({
+  let elements = arrayFromT<StepElement<string>>(numberOfElements, (index: number) => ({
     isAnswer: index % 2 === 0,
     value: formatElementValue(generateRandom(randomFc, key, tokenSize)),
     isEnded: false,
   }));
+
+  elements = removeDuplicates(
+    elements,
+    (array, item) => !!array.find((_item) => _item.value === item.value)
+  );
+
   return shuffle(elements);
 };
 

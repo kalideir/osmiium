@@ -16,7 +16,7 @@ function Header() {
                 onClick={() => dispatch(toggleTypesVisibility(true))}
                 className="text-4xl font-semibold 
   bg-gradient-to-r bg-clip-text  text-transparent 
-  from-gray-500 via-indigo-500 to-gray-800
+  from-gray-900 via-indigo-500 to-gray-800
   animate-text
   "
               >
