@@ -42,9 +42,9 @@ If you are interested in adding any of the above features, you are welcomed to m
 ## Authors
 
 Ali H. Kudeir
-[@Twitter](https://twitter.com/kalideir)
-[Linkedin](https://linkedin.com/in/ali-h-kudeir)
-[website](https://alihkudeir.com)
+- [@Twitter](https://twitter.com/kalideir)
+- [Linkedin](https://linkedin.com/in/ali-h-kudeir)
+- [website](https://alihkudeir.com)
 
 
 ## Acknowledgments
