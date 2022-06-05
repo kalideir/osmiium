@@ -1,4 +1,5 @@
 import React, { ReactNode } from 'react';
+import { Footer } from '.';
 import Header from './Header';
 
 function LayoutWrapper({ children }: { children: ReactNode }) {
@@ -7,6 +8,7 @@ function LayoutWrapper({ children }: { children: ReactNode }) {
       <div className="flex h-screen flex-col justify-between">
         <Header />
         <main className="mb-auto  rounded-lg">{children}</main>
+        <Footer />
       </div>
     </div>
   );
